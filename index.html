@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+
+<html>
+    <link href="./style.css" rel="stylesheet">
+    <head>
+        <div style="text-align: center;">
+            <h1 style="height:3%">Hangman</h1>
+        
+            <img src="1.png" id="stage" style="margin-top: 5%;">
+
+            <h1 id="word" style="margin-top: 5%;"></h1>
+
+            <h1 id="guessed" style="margin-top: 3%;"></h1>
+
+        </div>
+
+        <div style="text-align: center; position: absolute; top: 600px; left:0; right:0" class="btn">
+        
+            <button onclick="getLetter(this)" id="A">A</button>
+            <button onclick="getLetter(this)" id="B">B</button>
+            <button onclick="getLetter(this)" id="C">C</button>
+            <button onclick="getLetter(this)" id="D">D</button>
+            <button onclick="getLetter(this)" id="E">E</button>
+            <button onclick="getLetter(this)" id="F">F</button>
+            <button onclick="getLetter(this)" id="G">G</button>
+            <button onclick="getLetter(this)" id="H">H</button>
+            <button onclick="getLetter(this)" id="I">I</button>
+            <button onclick="getLetter(this)" id="J">J</button>
+            <button onclick="getLetter(this)" id="K">K</button>
+            <button onclick="getLetter(this)" id="L">L</button>
+            <button onclick="getLetter(this)" id="M">M</button>
+            <button onclick="getLetter(this)" id="N">N</button>
+            <button onclick="getLetter(this)" id="O">O</button>
+            <button onclick="getLetter(this)" id="P">P</button>
+            <button onclick="getLetter(this)" id="Q">Q</button>
+            <button onclick="getLetter(this)" id="R">R</button>
+            <button onclick="getLetter(this)" id="S">S</button>
+            <button onclick="getLetter(this)" id="T">T</button>
+            <button onclick="getLetter(this)" id="U">U</button>
+            <button onclick="getLetter(this)" id="V">V</button>
+            <button onclick="getLetter(this)" id="W">W</button>
+            <button onclick="getLetter(this)" id="X">X</button>
+            <button onclick="getLetter(this)" id="Y">Y</button>
+            <button onclick="getLetter(this)" id="Z">Z</button>
+
+            <script>
+                var guessed = "";
+                var current_stage = 0;
+                var completed = false;
+                document.getElementById("stage").src = stages[current_stage];
+                
+
+                function reset() {
+                    current_stage = 0;
+                    document.getElementById("stage").src = stages[current_stage];
+                    selected_word = words[chooseWord()];
+                    guessed = "";
+                    document.getElementById('guessed').innerHTML = guessed;
+                    blanks.length = 0;
+                    shown_blanks = "";
+                    document.getElementById("word").innerHTML = "";
+                    mainLoop();
+                    completed = false;
+                    document.getElementById('reset_button').style.visibility = 'hidden';
+                    document.getElementById('win_message').style.visibility = 'hidden';
+                }
+
+                function getLetter(btn) {
+                    if (guessed.includes(btn.innerHTML) == false) {
+                        guessed += btn.innerHTML;
+                        
+                        var match = false;
+                        completed = true;
+
+                        var new_blanks = "";
+
+                        for(var i = 0; i < blanks.length; i++) {
+
+                            for(var t = 0; t < guessed.length; t++) {
+                                if(guessed[t] === selected_word[i]) {
+                                    blanks[i] = guessed[t];
+                                    if(btn.innerHTML === selected_word[i]) {
+                                        var match = true;
+                                    }
+                                }
+                            }
+                        }
+
+                        shown_blanks = "";
+                        for(var i = 0; i < blanks.length; i++) {
+                            if (blanks[i] === "_") {
+                                shown_blanks += " _ "
+                                completed = false;
+                            }
+                            else if (blanks[i] === " "){
+                               shown_blanks += "&nbsp;&nbsp;";
+                            }
+                            else {
+                                shown_blanks += blanks[i];
+                            }
+                        }
+
+                        document.getElementById("word").innerHTML = shown_blanks;
+
+                        if (match === false) {
+                            current_stage += 1;
+                            if (current_stage >= stages.length - 1) {
+                                current_stage = stages.length - 1;
+                            }
+                        }
+
+                        if (current_stage === stages.length - 1) {
+                            document.getElementById('win_message').innerHTML = "You Lose! The correct word was: " + String(selected_word);
+                            document.getElementById('win_message').style.color = "rgb(233, 15, 15)";
+                            document.getElementById('win_message').style.visibility = 'visible';
+                            document.getElementById('reset_button').style.visibility = 'visible';
+                        }
+
+                        if (completed === true) {
+                            document.getElementById('win_message').innerHTML = "You Win!"
+                            document.getElementById('win_message').style.color = "rgb(15, 233, 15)";
+                            document.getElementById('win_message').style.visibility = 'visible';
+                            document.getElementById('reset_button').style.visibility = 'visible';
+                        }
+    
+                        document.getElementById("stage").src = stages[current_stage];
+                    }
+                    document.getElementById("guessed").innerHTML = guessed;
+
+                }
+            </script>
+
+
+        </div>
+
+        <div style="margin-top: 10%; text-align: center;">
+            <h1 style="color: rgb(15, 233, 15);" id="win_message">You Win!</h1>
+            <button onclick="reset()" id="reset_button">Play Again</button>
+
+        </div>
+        
+       <script>
+
+            function mainLoop() {
+                function createBlanks() {
+                    for(var i = 0; i < selected_word.length; i++) {
+                        if (selected_word[i] !== " ") {
+                            blanks.push("_");
+                        }
+                        else {
+                            blanks.push(" ");
+                        }
+                    }
+
+                    for(var i = 0; i < blanks.length; i++) {
+                        if (blanks[i] === "_"){
+                            shown_blanks += " _ "
+                        }
+                        else {
+                            shown_blanks += "&nbsp;&nbsp;";
+                        }
+                    }
+                }
+
+                createBlanks();
+
+                document.getElementById("word").innerHTML = shown_blanks;
+            }
+
+            document.getElementById('reset_button').style.visibility = 'hidden';
+            document.getElementById('win_message').style.visibility = 'hidden';
+
+            const stages = ["images/1.png", "images/2.png", 'images/3.png', 'images/4.png', "images/5.png", "images/6.png", "images/7.png", "images/8.png"];
+            document.getElementById("stage").src = stages[0];
+
+            const words = ['WATERMELON', 'MANGO', 'FRUIT LOOPS', 'CAT', 'DOG', 'BAGEL', 'KANGAROO', 'BURRITO', 'PIZZA', 'COMPUTER', 'FISH', 'HACKER', 'TELEVISION', 'CAKE', 'ICE CREAM', 'CHEESE', 'SCHOOL', 'HAMBURGER', 'TREE', 'CONCRETE', 'APPLE', 'KETCHUP', 'SANDWICH', 'YOGURT'];
+            //const words = ['CAT']
+
+            function chooseWord() {
+                var rand = Math.random();
+                rand *= words.length;
+                rand = Math.floor(rand);
+                return rand;
+            }
+                
+
+            var selected_word = words[chooseWord()];
+
+            const blanks = [];
+
+            var shown_blanks = "";
+
+            mainLoop();
+
+        </script>
+
+    </head>
+</html>

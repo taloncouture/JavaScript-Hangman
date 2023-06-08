@@ -1,0 +1,22 @@
+ .btn button{
+    background-color: rgb(173, 173, 173);
+    width: 30px;
+    height: 30px;
+    margin:3px;
+}
+
+.btn button:hover {
+    background-color: rgb(141, 141, 141);
+}
+
+.btn button:active {
+    background-color: rgb(104, 104, 104);
+}
+
+.btn button:focus {
+    background-color: rgb(104, 104, 104);
+}
+
+.btn button:visited {
+    background-color: rgb(104, 104, 104);
+}
